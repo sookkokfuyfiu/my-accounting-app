@@ -102,7 +102,7 @@ else:
         categories = execute_db("SELECT `類別ID`, `類別名稱` FROM `交易類別` WHERE `使用者ID` = %s", (st.session_state.user_id,), fetchall=True)
         
         if not accounts or not categories:
-            st.warning("⚠️ 請先到「帳戶與類別設定」建立至少一個帳戶與一個類別才能開始記帳喔！")
+            st.warning("⚠️ 請先到「帳戶與類別設定」建立至少一個帳戶與一個類別才能開始記帳，若設定了卻沒出現請重新整理業面！")
         else:
             acc_dict = {f"{a[1]}": a[0] for a in accounts}
             cat_dict = {f"{c[1]}": c[0] for c in categories}
