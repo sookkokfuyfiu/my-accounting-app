@@ -142,29 +142,26 @@ else:
 
     # --- 頁籤 3：設定 ---
     with tab_settings:
-        st.subheader("建立新帳戶 (錢包)")
-        new_acc_name = st.text_input("帳戶名稱 (如: 現金)", key="new_acc")
-        new_acc_bal = st.number_input("初始餘額", value=0, key="new_bal")
-        if st.button("新增帳戶"):
-            if new_acc_name:
-                execute_db("INSERT INTO `帳戶` (`帳戶名稱`, `目前餘額`, `使用者ID`) VALUES (%s, %s, %s)", (new_acc_name, new_acc_bal, st.session_state.user_id))
-                st.success(f"帳戶「{new_acc_name}」建立成功！")
-    # ✅ 加上 key 身分證
+    st.subheader("建立新帳戶 (錢包)")
+    new_acc_name = st.text_input("帳戶名稱 (如: 現金)", key="new_acc")
+    new_acc_bal = st.number_input("初始餘額", value=0, key="new_bal")
+    
+    # 🌟 第一個按鈕：新增帳戶 (已包含 key 與 rerun)
     if st.button("新增帳戶", key="add_account_btn"):
-        if execute_db("INSERT INTO ...", (...)):
-            st.success("帳戶新增成功！")
-            st.rerun()  # 🌟 加上這行：讓網頁自動重新整理！
-        st.divider() # 分隔線
-        
-        st.subheader("建立新類別 (標籤)")
-        new_cat_name = st.text_input("類別名稱 (如: 餐飲)", key="new_cat")
-        new_cat_type = st.selectbox("類型", ["支出", "收入"], key="new_cat_type")
-        if st.button("新增類別"):
-            if new_cat_name:
-                execute_db("INSERT INTO `交易類別` (`類別名稱`, `類別類型`, `使用者ID`) VALUES (%s, %s, %s)", (new_cat_name, new_cat_type, st.session_state.user_id))
-                st.success(f"類別「{new_cat_name}」建立成功！")
-        # ✅ 順手幫類別按鈕也加上 key
-        if st.button("新增類別", key="add_category_btn"):
-            if execute_db("INSERT INTO ...", (...)):
-                st.success("帳戶新增成功！")
-                st.rerun()  # 🌟 加上這行：讓網頁自動重新整理！
+        if new_acc_name:
+            execute_db("INSERT INTO `帳戶` (`帳戶名稱`, `目前餘額`, `使用者ID`) VALUES (%s, %s, %s)", (new_acc_name, new_acc_bal, st.session_state.user_id))
+            st.success(f"帳戶「{new_acc_name}」建立成功！")
+            st.rerun() # 成功後自動重新整理網頁
+
+    st.divider() # 分隔線
+
+    st.subheader("建立新類別 (標籤)")
+    new_cat_name = st.text_input("類別名稱 (如: 餐飲)", key="new_cat")
+    new_cat_type = st.selectbox("類型", ["支出", "收入"], key="new_cat_type")
+    
+    # 🌟 第二個按鈕：新增類別 (已包含 key 與 rerun)
+    if st.button("新增類別", key="add_category_btn"):
+        if new_cat_name:
+            execute_db("INSERT INTO `交易類別` (`類別名稱`, `類別類型`, `使用者ID`) VALUES (%s, %s, %s)", (new_cat_name, new_cat_type, st.session_state.user_id))
+            st.success(f"類別「{new_cat_name}」建立成功！")
+            st.rerun() # 成功後自動重新整理網頁
