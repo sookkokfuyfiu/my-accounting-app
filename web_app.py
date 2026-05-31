@@ -77,8 +77,8 @@ if st.session_state.user_id is None:
         if st.button("註冊帳號"):
             if not reg_name or not reg_password or not reg_email:
                 st.warning("名稱、密碼和信箱都必須填寫！")
-        else:
-            if execute_db("INSERT INTO `使用者` (`使用者名稱`, `密碼`, `信箱`) VALUES (%s, %s, %s)", (reg_name, reg_password, reg_email)):
+            else:
+                if execute_db("INSERT INTO `使用者` (`使用者名稱`, `密碼`, `信箱`) VALUES (%s, %s, %s)", (reg_name, reg_password, reg_email)):
                 st.success(f"使用者「{reg_name}」註冊成功！請切換到登入頁籤登入。")
 # ================= 介面：已登入主畫面 =================
 else:
