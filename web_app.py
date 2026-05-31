@@ -10,8 +10,8 @@ DB_CONFIG = {
     'user': '3BRXQtSDgidR3qL.root',      # 例如: '3BRXQtSDgidR3qL.root'
     'password': 'v2jCqCG1J9U8b3RF', # 貼上你剛剛 Generate 出來的那串密碼
     'database': 'AccountingSystem',    # 這個保持不變，因為你剛剛已經建好這個資料庫了
-    'ssl_verify_cert': True,           # 🌟 雲端資料庫通常需要加密連線，加上這一行會比較穩！
-    'ssl_verify_identity': True
+    'ssl_verify_cert': False,           # 🌟 雲端資料庫通常需要加密連線，加上這一行會比較穩！
+    'ssl_verify_identity': False
 }
 
 def execute_db(sql, values=None, fetchall=False, fetchone=False):
