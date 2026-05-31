@@ -149,7 +149,10 @@ else:
             if new_acc_name:
                 execute_db("INSERT INTO `帳戶` (`帳戶名稱`, `目前餘額`, `使用者ID`) VALUES (%s, %s, %s)", (new_acc_name, new_acc_bal, st.session_state.user_id))
                 st.success(f"帳戶「{new_acc_name}」建立成功！")
-                
+    if st.button("新增帳戶"):
+        if execute_db("INSERT INTO ...", (...)):
+            st.success("帳戶新增成功！")
+            st.rerun()  # 🌟 加上這行：讓網頁自動重新整理！
         st.divider() # 分隔線
         
         st.subheader("建立新類別 (標籤)")
@@ -159,3 +162,7 @@ else:
             if new_cat_name:
                 execute_db("INSERT INTO `交易類別` (`類別名稱`, `類別類型`, `使用者ID`) VALUES (%s, %s, %s)", (new_cat_name, new_cat_type, st.session_state.user_id))
                 st.success(f"類別「{new_cat_name}」建立成功！")
+        if st.button("新增類別"):
+            if execute_db("INSERT INTO ...", (...)):
+                st.success("帳戶新增成功！")
+                st.rerun()  # 🌟 加上這行：讓網頁自動重新整理！
