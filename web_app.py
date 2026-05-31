@@ -18,7 +18,7 @@ def execute_db(sql, values=None, fetchall=False, fetchone=False):
     conn = None
     try:
         conn = mysql.connector.connect(**DB_CONFIG)
-        cursor = conn.cursor()
+        cursor = conn.cursor(buffered=True)
         cursor.execute(sql, values)
         if fetchall:
             return cursor.fetchall()
