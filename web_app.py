@@ -52,32 +52,34 @@ if st.session_state.user_id is None:
     tab_login, tab_register = st.tabs(["🚪 登入", "📝 註冊"])
     
     with tab_login:
-        st.subheader("登入你的帳號")
-        login_name = st.text_input("使用者名稱", key="login")
-        if st.button("進入系統", type="primary"):
-            if not login_name:
-                st.warning("請輸入使用者名稱！")
-            else:
-                user = execute_db("SELECT `使用者ID`, `使用者名稱` FROM `使用者` WHERE `使用者名稱` = %s", (login_name,), fetchone=True)
-                if user:
-                    st.session_state.user_id = user[0]
-                    st.session_state.user_name = user[1]
-                    st.success("登入成功！載入中...")
-                    st.rerun() # 重新整理網頁，進入主畫面
-                else:
-                    st.error("找不到這個使用者，請先切換到旁邊註冊喔！")
+    st.subheader("登入你的帳號")
+    login_name = st.text_input("使用者名稱")
+    login_password = st.text_input("密碼", type="password")
+
+    if st.button("進入系統"):
+        user = execute_db("SELECT `使用者ID`, `使用者名稱` FROM `使用者` WHERE `使用者名稱` = %s AND `密碼` = %s", (login_name, login_password), fetchone=True)
+
+        if user:
+            st.session_state['logged_in'] = True
+            st.session_state['user_id'] = user[0]
+            st.session_state['user_name'] = user[1]
+            st.success(f"歡迎回來，{user[1]}！")
+            st.rerun()
+        else:
+            st.error("帳號或密碼錯誤，請再試一次！")
                     
     with tab_register:
-        st.subheader("建立新帳號")
-        reg_name = st.text_input("設定使用者名稱", key="reg_name")
-        reg_email = st.text_input("設定電子信箱", key="reg_email")
-        if st.button("註冊帳號"):
-            if not reg_name or not reg_email:
-                st.warning("名稱和信箱都必須填寫！")
-            else:
-                if execute_db("INSERT INTO `使用者` (`使用者名稱`, `信箱`) VALUES (%s, %s)", (reg_name, reg_email)):
-                    st.success(f"使用者「{reg_name}」註冊成功！請切換到登入頁籤登入。")
+    st.subheader("建立新帳號")
+    reg_name = st.text_input("設定使用者名稱", key="reg_name")
+    reg_password = st.text_input("設定密碼", type="password", key="reg_password")
+    reg_email = st.text_input("設定電子信箱", key="reg_email")
 
+    if st.button("註冊帳號"):
+        if not reg_name or not reg_password or not reg_email:
+            st.warning("名稱、密碼和信箱都必須填寫！")
+        else:
+            if execute_db("INSERT INTO `使用者` (`使用者名稱`, `密碼`, `信箱`) VALUES (%s, %s, %s)", (reg_name, reg_password, reg_email)):
+                st.success(f"使用者「{reg_name}」註冊成功！請切換到登入頁籤登入。")
 # ================= 介面：已登入主畫面 =================
 else:
     # 側邊欄 (Sidebar) 設計
