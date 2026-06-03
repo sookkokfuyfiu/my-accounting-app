@@ -5,12 +5,12 @@ import pandas as pd
 # ================= 資料庫設定 =================
 # ================= 資料庫設定 =================
 DB_CONFIG = {
-    'host': 'gateway01.ap-northeast-1.prod.aws.tidbcloud.com',  # 例如: 'gateway01.ap-northeast-1.prod.aws.tidbcloud.com'
-    'port': 4000,                      # ⚠️ 注意！這裡要改成 4000
-    'user': '3BRXQtSDgidR3qL.root',      # 例如: '3BRXQtSDgidR3qL.root'
-    'password': 'v2jCqCG1J9U8b3RF', # 貼上你剛剛 Generate 出來的那串密碼
-    'database': 'AccountingSystem',    # 這個保持不變，因為你剛剛已經建好這個資料庫了
-    'ssl_verify_cert': False,           # 🌟 雲端資料庫通常需要加密連線，加上這一行會比較穩！
+    'host': 'gateway01.ap-northeast-1.prod.aws.tidbcloud.com',  
+    'port': 4000,                      
+    'user': '3BRXQtSDgidR3qL.root',      
+    'password': 'v2jCqCG1J9U8b3RF', 
+    'database': 'AccountingSystem',    
+    'ssl_verify_cert': False,           
     'ssl_verify_identity': False
 }
 
