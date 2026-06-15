@@ -3,7 +3,6 @@ import mysql.connector
 import pandas as pd
 
 # ================= 資料庫設定 =================
-# ================= 資料庫設定 =================
 DB_CONFIG = {
     'host': 'gateway01.ap-northeast-1.prod.aws.tidbcloud.com',  
     'port': 4000,                      
@@ -92,8 +91,8 @@ else:
 
     st.title("📊 我的財務儀表板")
     
-    # 建立功能頁籤
-    tab_record, tab_balance, tab_settings = st.tabs(["💰 新增交易", "📈 帳戶餘額", "⚙️ 帳戶與類別設定"])
+    # 🌟 【修改處 1】 建立功能頁籤中加入了 "📜 歷史紀錄"
+    tab_record, tab_balance, tab_history, tab_settings = st.tabs(["💰 新增交易", "📈 帳戶餘額", "📜 歷史紀錄", "⚙️ 帳戶與類別設定"])
     
     # --- 頁籤 1：新增交易 ---
     with tab_record:
@@ -140,7 +139,31 @@ else:
         else:
             st.info("目前沒有任何帳戶資料。")
 
-    # --- 頁籤 3：設定 ---
+      #歷史紀錄 的實作內容
+    with tab_history:
+        st.subheader("歷史交易明細")
+        
+        # 透過 INNER JOIN 連接「帳戶」和「交易類別」資料表，並過濾出當前使用者的帳戶資料
+        sql_history = """
+            SELECT 
+                a.`帳戶名稱`, 
+                c.`類別名稱`, 
+                t.`交易類型`, 
+                t.`金額`
+            FROM `交易紀錄` t
+            INNER JOIN `帳戶` a ON t.`帳戶ID` = a.`帳戶ID`
+            INNER JOIN `交易類別` c ON t.`類別ID` = c.`類別ID`
+            WHERE a.`使用者ID` = %s
+        """
+        history_data = execute_db(sql_history, (st.session_state.user_id,), fetchall=True)
+        
+        if history_data:
+            df_history = pd.DataFrame(history_data, columns=["交易帳戶", "交易類別", "類型", "金額 (元)"])
+            st.dataframe(df_history, use_container_width=True, hide_index=True)
+        else:
+            st.info("目前尚無任何交易紀錄。")
+
+    # --- 頁籤 4：設定 ---
     with tab_settings:
         st.subheader("建立新帳戶 (錢包)")
         new_acc_name = st.text_input("帳戶名稱 (如: 現金)", key="new_acc")
